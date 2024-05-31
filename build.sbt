@@ -1,8 +1,9 @@
-import scala.sys.process._
-
-ThisBuild / scalaVersion := "2.13.12"
-ThisBuild / version      := "0.1.0-SNAPSHOT"
-ThisBuild / organization := "ee.hrzn"
+ThisBuild / scalaVersion         := "2.13.12"
+ThisBuild / version              := "0.1.0-SNAPSHOT"
+ThisBuild / versionScheme        := Some("early-semver")
+ThisBuild / homepage             := Some(url("https://github.com/chryse-hdl/athena"))
+ThisBuild / organization         := "ee.hrzn"
+ThisBuild / organizationHomepage := Some(url("https://github.com/chryse-hdl"))
 
 val chiselVersion = "6.3.0"
 
@@ -16,7 +17,7 @@ lazy val root = (project in file("."))
     ),
     scalacOptions ++= Seq(
       "-language:reflectiveCalls", "-deprecation", "-feature", "-Xcheckinit",
-      "-Ymacro-annotations",
+      "-Ymacro-annotations", "-Xlint",
     ),
     addCompilerPlugin(
       "org.chipsalliance" % "chisel-plugin" % chiselVersion cross CrossVersion.full,
