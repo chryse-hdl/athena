@@ -21,7 +21,7 @@ package ee.hrzn.athena.uart
 import chisel3._
 import chisel3.util._
 
-class TX(private val divisor: Int) extends Module {
+class TX(private val divisor: BigInt) extends Module {
   val io  = IO(Flipped(Irrevocable(UInt(8.W))))
   val pin = IO(Output(Bool()))
 

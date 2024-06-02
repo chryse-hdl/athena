@@ -22,7 +22,7 @@ import chisel3._
 import chisel3.experimental.BundleLiterals._
 import chisel3.util._
 
-class RX(private val divisor: Int) extends Module {
+class RX(private val divisor: BigInt) extends Module {
   val io  = IO(Decoupled(new RXOut))
   val pin = IO(Input(Bool()))
 
