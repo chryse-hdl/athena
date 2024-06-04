@@ -38,11 +38,11 @@ class UART(val baud: Int = 9600, val bufferLength: Int = 32)(implicit
     val tx = Output(Bool())
   })
 
-  val rx = Module(new RX(divisor))
+  private val rx = Module(new RX(divisor))
   io.rx :<>= Queue(rx.io, bufferLength, useSyncReadMem = true)
   rx.pin := pins.rx
 
-  val tx = Module(new TX(divisor))
+  private val tx = Module(new TX(divisor))
   tx.io :<>= Queue.irrevocable(io.tx, bufferLength, useSyncReadMem = true)
   pins.tx := tx.pin
 }
