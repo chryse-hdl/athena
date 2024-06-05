@@ -34,16 +34,16 @@ class TX(private val divisor: BigInt) extends Module {
   private val counterReg = RegInit(0.U(unsignedBitLength(9).W))
   private val shiftReg   = RegInit(0.U(10.W))
 
-  pin      := true.B
-  io.ready := false.B
+  pin := true.B
+  io.nodeq()
 
   switch(state) {
     is(State.sIdle) {
-      io.ready := true.B
-      when(io.valid) {
+      val bits = io.deq()
+      when(io.fire) {
         timerReg   := (divisor - 1).U
         counterReg := 9.U
-        shiftReg   := 1.U(1.W) ## io.bits ## 0.U(1.W)
+        shiftReg   := 1.U(1.W) ## bits ## 0.U(1.W)
         state      := State.sTx
       }
     }
