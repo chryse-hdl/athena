@@ -46,8 +46,8 @@ class RXSpec extends AnyFlatSpec {
     }
 
     // Wait to get into sFinish, accounting for the synchronisation delay.
-    for { i <- 0 until 3 } {
-      c.io.valid.expect(false.B)
+    for { i <- 0 until 2 } {
+      c.io.valid.expect(false.B, s"step $i")
       c.clock.step()
     }
   }

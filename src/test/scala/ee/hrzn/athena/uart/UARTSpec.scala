@@ -60,8 +60,8 @@ class UARTSpec extends AnyFlatSpec {
       // Assert STOP and hold for one bit; wait for sync and processing delay (?).
       c.pins.rx.poke(true.B)
 
-      for { i <- 0 until 7 } {
-        c.io.rx.valid.expect(false.B)
+      for { i <- 0 until 6 } {
+        c.io.rx.valid.expect(false.B, s"step $i")
         c.clock.step()
       }
 

@@ -19,7 +19,6 @@
 package ee.hrzn.athena.uart
 
 import chisel3._
-import chisel3.experimental.BundleLiterals._
 import chisel3.util._
 
 class RX(private val divisor: BigInt) extends Module {
@@ -27,13 +26,6 @@ class RX(private val divisor: BigInt) extends Module {
   val pin = IO(Input(Bool()))
 
   private val syncedPin = RegNext(RegNext(pin, true.B), true.B)
-
-  private val validReg = RegInit(false.B)
-  io.valid := validReg
-  private val bitsReg = RegInit(
-    new RXOut().Lit(_.byte -> 0.U, _.err -> false.B),
-  )
-  io.bits := bitsReg
 
   object State extends ChiselEnum {
     val sIdle, sRx, sFinish = Value
@@ -50,10 +42,7 @@ class RX(private val divisor: BigInt) extends Module {
   //       ^-- timer hits 0, counterReg 8->7
   //                                       ^-- 0->-1. Finish @ half STOP bit.
 
-  // Reset valid when "consumed".
-  when(io.ready) {
-    validReg := false.B
-  }
+  io.noenq()
 
   switch(state) {
     is(State.sIdle) {
@@ -77,12 +66,11 @@ class RX(private val divisor: BigInt) extends Module {
       }
     }
     is(State.sFinish) {
-      when(io.ready) {
-        validReg     := true.B
-        bitsReg.byte := shiftReg(8, 1)
-        // START high or STOP low.
-        bitsReg.err := shiftReg(0) | ~shiftReg(9)
-      }
+      val rxout = Wire(new RXOut())
+      rxout.byte := shiftReg(8, 1)
+      // START high or STOP low.
+      rxout.err := shiftReg(0) | ~shiftReg(9)
+      io.enq(rxout)
       state := State.sIdle
     }
   }
