@@ -27,7 +27,11 @@ class UartIO extends Bundle {
   val rx = Decoupled(new RXOut)
 }
 
-class Uart(val baud: Int = 9600, val bufferLength: Int = 32)(implicit
+class Uart(
+    val baud: Int = 9600,
+    val bufferLength: Int = 16,
+    useSyncReadMem: Boolean = true,
+)(implicit
     platform: Platform,
 ) extends Module {
   private val divisor = platform.clockHz / baud
@@ -39,10 +43,14 @@ class Uart(val baud: Int = 9600, val bufferLength: Int = 32)(implicit
   })
 
   private val rx = Module(new RX(divisor))
-  io.rx :<>= Queue(rx.io, bufferLength, useSyncReadMem = true)
+  io.rx :<>= Queue(rx.io, bufferLength, useSyncReadMem = useSyncReadMem)
   rx.pin := pins.rx
 
   private val tx = Module(new TX(divisor))
-  tx.io :<>= Queue.irrevocable(io.tx, bufferLength, useSyncReadMem = true)
+  tx.io :<>= Queue.irrevocable(
+    io.tx,
+    bufferLength,
+    useSyncReadMem = useSyncReadMem,
+  )
   pins.tx := tx.pin
 }
