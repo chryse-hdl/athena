@@ -2,7 +2,7 @@ package ee.hrzn.athena.flashable
 
 import ee.hrzn.chryse.ChryseApp
 import ee.hrzn.chryse.ChryseSubcommand
-import ee.hrzn.chryse.platform.cxxrtl.CXXRTLPlatform
+import ee.hrzn.chryse.platform.cxxrtl.CxxrtlPlatform
 import ee.hrzn.chryse.tasks.BaseTask
 
 import java.io.FileOutputStream
@@ -41,7 +41,7 @@ abstract class SubcommandRom(chryse: ChryseApp)
     binPath
   }
 
-  def generateCxxrtl(platform: CXXRTLPlatform): Unit = {
+  def generateCxxrtl(platform: CxxrtlPlatform): Unit = {
     val romFlashBase = platform.asInstanceOf[PlatformFlashable].romFlashBase
     val content      = romContent
     writePath(s"$buildDir/rom.cc") { wr =>
@@ -65,7 +65,7 @@ abstract class SubcommandRom(chryse: ChryseApp)
         else
           chryse.targetPlatforms(0)
 
-      platform.asInstanceOf[PlatformFlashable].programROM(binPath)
+      platform.asInstanceOf[PlatformFlashable].programRom(binPath)
     }
   }
 }

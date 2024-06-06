@@ -23,8 +23,8 @@ import chisel3.simulator.EphemeralSimulator._
 import ee.hrzn.chryse.platform.Platform
 import org.scalatest.flatspec.AnyFlatSpec
 
-class UARTSpec extends AnyFlatSpec {
-  behavior.of("UART")
+class UartSpec extends AnyFlatSpec {
+  behavior.of("Uart")
 
   // These tests are *really* ugly, but they work for now. Need more clarity.
 
@@ -34,7 +34,7 @@ class UARTSpec extends AnyFlatSpec {
   }
 
   it should "receive a byte" in {
-    simulate(new UART(baud = 1)) { c =>
+    simulate(new Uart(baud = 1)) { c =>
       c.reset.poke(true.B)
       c.clock.step()
       c.reset.poke(false.B)
@@ -79,7 +79,7 @@ class UARTSpec extends AnyFlatSpec {
   }
 
   it should "transmit a byte" in {
-    simulate(new UART(baud = 1)) { c =>
+    simulate(new Uart(baud = 1)) { c =>
       c.reset.poke(true.B)
       c.clock.step()
       c.reset.poke(false.B)

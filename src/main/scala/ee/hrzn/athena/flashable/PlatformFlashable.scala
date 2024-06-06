@@ -6,10 +6,10 @@ trait PlatformFlashable {
   var romFlashBase: BigInt
   def romFlashCommand(binPath: String): Seq[String]
 
-  def programROM(binPath: String): Unit =
-    programROMImpl(binPath)
+  def programRom(binPath: String): Unit =
+    programRomImpl(binPath)
 
-  object programROMImpl extends BaseTask {
+  object programRomImpl extends BaseTask {
     def apply(binPath: String): Unit =
       runCmd(CmdStepProgram, romFlashCommand(binPath))
   }

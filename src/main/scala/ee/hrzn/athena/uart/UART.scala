@@ -22,17 +22,17 @@ import chisel3._
 import chisel3.util._
 import ee.hrzn.chryse.platform.Platform
 
-class UARTIO extends Bundle {
+class UartIO extends Bundle {
   val tx = Flipped(Decoupled(UInt(8.W)))
   val rx = Decoupled(new RXOut)
 }
 
-class UART(val baud: Int = 9600, val bufferLength: Int = 32)(implicit
+class Uart(val baud: Int = 9600, val bufferLength: Int = 32)(implicit
     platform: Platform,
 ) extends Module {
   private val divisor = platform.clockHz / baud
 
-  val io = IO(new UARTIO)
+  val io = IO(new UartIO)
   val pins = IO(new Bundle {
     val rx = Input(Bool())
     val tx = Output(Bool())
