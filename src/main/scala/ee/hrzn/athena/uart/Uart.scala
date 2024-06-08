@@ -35,6 +35,10 @@ class Uart(
     platform: Platform,
 ) extends Module {
   private val divisor = platform.clockHz / baud
+  if (divisor < 2)
+    throw new IllegalArgumentException(
+      s"can't manage $baud at ${platform.clockHz}Hz",
+    )
 
   val io = IO(new UartIO)
   val pins = IO(new Bundle {
