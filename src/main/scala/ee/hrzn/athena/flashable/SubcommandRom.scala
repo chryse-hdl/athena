@@ -45,7 +45,7 @@ abstract class SubcommandRom(chryse: ChryseApp)
 
   def romContent: Array[Byte]
 
-  private def generate(): String = {
+  def generate(): String = {
     val buildDir = "build"
 
     Files.createDirectories(Path.of(buildDir))
